@@ -148,6 +148,7 @@
   <ItemGroup>
     <ClInclude Include="Entity.h" />
     <ClInclude Include="ListEntity.h" />
+    <ClInclude Include="QueueNo.h" />
     <ClInclude Include="Skeleton.h" />
     <ClInclude Include="Statue.h" />
     <ClInclude Include="World.h" />
@@ -155,6 +156,7 @@
   <ItemGroup>
     <ClCompile Include="ListEntity.cpp" />
     <ClCompile Include="mainProc.cpp" />
+    <ClCompile Include="QueueNo.cpp" />
     <ClCompile Include="World.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

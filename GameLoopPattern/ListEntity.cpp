@@ -2,6 +2,8 @@
 #include<iostream>
 using namespace std;
 
+CQueueNo* CEntity::queueKey = new CQueueNo();
+CQueueNo* CEntity::seveKey = new CQueueNo();
 
 CListEntity::CListEntity()
 {
@@ -14,12 +16,27 @@ CListEntity::~CListEntity()
 
 node* CListEntity::addEnt(node* T, CEntity* ent)
 {
+	// seveKey큐가 트리에 가지고있는 모든 key를 담을 수 있도록 postOrder메소드 호출함.
+	postOrder(T);
+	//cout << "seveKey->getCount() = " << CEntity::seveKey->getCount() << endl;
+	// seveKey에 담긴 키들과 지금 넣으려는 키와 비교 
+	for (int i = 0; i <= CEntity::seveKey->getCount();/*트리에 담긴 키 갯수*/ i++)
+	{
+		//cout << "seveKey->dequeue() = " << CEntity::seveKey->dequeue() << "ent->getNo() = " << ent->getNo() << endl;
+		if (CEntity::seveKey->dequeue() == ent->getNo())
+		{
+			cout << "중복되는 키가 존재하여 트리에 담지 못하였습니다." << endl;
+			return nullptr;
+		}
+	}
+	
+	
+
 	if (T == NULL)
 	{
-
 		cout << ent->getNo() << "번 소환" << endl;
 		T = new node;
-		cout << "addEnt속 T의 주소 : " << T << endl;
+		//cout << "addEnt속 T의 주소 : " << T << endl;
 		T->entity = ent;
 		T->Lchild = NULL;
 		T->Rchild = NULL;
@@ -38,11 +55,13 @@ node* CListEntity::addEnt(node* T, CEntity* ent)
 	return T;
 }
 
-void CListEntity::delEnt(node* T, CEntity* ent)
+void CListEntity::delEnt(node* &T, CEntity* ent)
 {
+
 	if (T == NULL)
 	{
 		cout << "삭제할 노드가 없다" << endl;
+		return;
 	}
 	else if (T->entity->getNo() > ent->getNo())
 	{
@@ -54,6 +73,9 @@ void CListEntity::delEnt(node* T, CEntity* ent)
 	}
 	else if (T->entity->getNo() == ent->getNo())
 	{
+		// 번호를 재사용하기 위해 삭재된 객체의 key는 큐에 저장 합니다.
+		CEntity::queueKey->enqueue(T->entity->getNo());
+		cout << "재사용을 위해 " << T->entity->getNo() << " 번 저장!" << endl;
 		if (T->Lchild == nullptr && T->Rchild == nullptr)
 		{
 			node* temp = T;
@@ -81,9 +103,10 @@ void CListEntity::delEnt(node* T, CEntity* ent)
 
 void CListEntity::preOrder(node * T)
 {
-	if (T != nullptr)
+	if (T != NULL)
 	{
-		//cout << "preOrder" << endl;
+		//cout << "entity의 주소 = " << T->entity << endl;
+		//cout << "활성화된 번호 = //// " << T->entity->getNo() << " ////" << endl;
 		T->entity->update();
 		preOrder(T->Lchild);
 		preOrder(T->Rchild);
@@ -106,11 +129,12 @@ void CListEntity::postOrder(node * T)
 	{
 		postOrder(T->Lchild);
 		postOrder(T->Rchild);
-		T->entity->update();
+		CEntity::seveKey->enqueue(T->entity->getNo());
+		//T->entity->update();
 	}
 }
 
-void CListEntity::successorCopy(node * T, CEntity& ent)
+void CListEntity::successorCopy(node* &T, CEntity& ent)
 {
 	if (T->Lchild == NULL)
 	{

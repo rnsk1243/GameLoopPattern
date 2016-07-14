@@ -11,14 +11,15 @@ class CWorld
 public:
 	CWorld();
 	~CWorld();
+	// 霸烙风橇
 	void gameLoop(node* root);
-	node* addEnt(node* T, CEntity* ent)
+	node* addEnt(node* &T, CEntity* ent)
 	{
-		cout << "Tree狼 林家 = " << m_entTree << endl;
-		cout << "T狼 林家 : " << T << endl;
+		//cout << "Tree狼 林家 = " << m_entTree << endl;
+		//cout << "T狼 林家 : " << T << endl;
 		return m_entTree->addEnt(T, ent);
 	}
-	void removeEnt(node* T, CEntity* ent)
+	void removeEnt(node* &T, CEntity* ent)
 	{
 		m_entTree->delEnt(T, ent);
 	}
