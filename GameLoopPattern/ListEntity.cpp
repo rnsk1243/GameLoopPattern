@@ -30,7 +30,6 @@ node* CListEntity::addEnt(node* T, CEntity* ent)
 		}
 	}
 	
-	
 
 	if (T == NULL)
 	{

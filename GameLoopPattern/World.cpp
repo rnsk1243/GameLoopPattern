@@ -13,11 +13,7 @@ CWorld::~CWorld()
 
 void CWorld::gameLoop(node* root)
 {
-	while (true)
-	{
-		//cout << "loop" << endl;
 		// 트리에 있는 모든 객체의 업데이트 메소드 호출
 		m_entTree->preOrder(root);
-		Sleep(500);
-	}
+		//Sleep(500);
 }
